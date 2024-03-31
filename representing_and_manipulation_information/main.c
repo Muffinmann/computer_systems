@@ -75,4 +75,11 @@ void main() {
   printf("ptr1 value of i3: %d\n", *ptr1);  // prints 15
   printf("ptr2 value of i3: %d\n", *ptr2);  // prints 1039
   // By assign the type of a pointer, we determine how many bytes are accessed when dereferencing it.
+
+  int binary_i = 0xabc;  // assign binary value with hexadecimal representation.
+  // this is equal to 1010 1011 1100,
+  // which is 2^11 + 2^9 + 2^7 + 2^5 + 2^4 + 2^3 + 2^2
+  // 2048 + 512 + 128 + 32 + 16 + 12 = 2748
+  show_int(2748);      // bc 0a 00 00
+  show_int(binary_i);  // bc 0a 00 00
 }

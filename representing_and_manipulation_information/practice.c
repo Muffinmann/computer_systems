@@ -115,10 +115,82 @@ void practice_2_11() {
   printf("\n");
 }
 
+// The least significant byte of x, with all other bits set to 0
+int mask_least_significant_byte(int x) {
+  int mask = 0xff;
+  return mask & x;
+}
+
+// All but the least significant byte of x complemented, with the
+// least significant byte left unchanged.
+int mask_least_significant_byte_left_complemented(int x) {
+  int mask = 0xff;
+  int least_significant_byte = mask & x;
+  int left_of_least_significant_byte_complemented = ~mask & ~x;
+  return left_of_least_significant_byte_complemented | least_significant_byte;
+}
+
+//  The least significant byte set to all 1s, and all other bytes of x left unchanged.
+int mask_least_significant_byte_one(int x) {
+  int mask = 0xff;
+  return x | mask;
+}
+
+void practice_2_12() {
+  printf("---practice 2.12--- \n");
+  int x = 0x87654321;
+  show_int(mask_least_significant_byte(x));                    // 21 00 00 00
+  show_int(mask_least_significant_byte_left_complemented(x));  // 21 bc 9a 78
+  show_int(mask_least_significant_byte_one(x));                // ff 43 65 87
+}
+
+// setting z to 1 at each bit position where m is 1
+int bis(int x, int m) {
+  return x | m;
+};
+
+// setting z to 0 at each bit position where m is 1
+int bic(int x, int m) {
+  return x & ~m;
+};
+
+// compute x|y and x^y using only calls to functions bis and bic
+/*
+ * A  B  A_bis  A_bic  B_bis  B_bic  OR  XOR
+   0  0  0      0      0      0      0   0
+   0  1  1      0      1      1      1   1
+   1  0  1      1      1      0      1   1
+   1  1  1      0      1      0      1   0
+*/
+// from the table, easy to see XOR is an OR operation on A_bic and B_bic
+// which itself if identical to bis.
+
+int bool_or(int x, int y) {
+  int result = bis(x, y);
+  return result;
+}
+
+int bool_xor(int x, int y) {
+  int result = bis(bic(x, y), bic(y, x));
+  return result;
+}
+
+void practice_2_13() {
+  printf("---practice 2.13--- \n");
+  int x = 0b1101;
+  int y = 0b1001;
+  int res_or = bool_or(x, y);
+  int res_xor = bool_xor(x, y);
+  show_int(res_or);   // 0d 00 00 00 -> 1101
+  show_int(res_xor);  // 04 00 00 00 -> 0100
+}
+
 void main() {
   practice_2_5();
   practice_2_6();
   practice_2_7();
   practice_2_10();
   practice_2_11();
+  practice_2_12();
+  practice_2_13();
 }
