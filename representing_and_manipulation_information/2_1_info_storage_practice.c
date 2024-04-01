@@ -185,6 +185,19 @@ void practice_2_13() {
   show_int(res_xor);  // 04 00 00 00 -> 0100
 }
 
+// Using only bit-level and logical operations, write a C expression that is equivalent
+// to x == y. In other words, it will return 1 when x and y are equal, and 0 otherwise.
+int equal(int x, int y) {
+  return !(x ^ y);
+}
+
+void practice_2_15() {
+  int res1 = equal(13, 13);
+  int res2 = equal(11, 13);
+  printf("res1 is equal: %d \n", res1);
+  printf("res2 is equal: %d \n", res2);
+}
+
 void main() {
   practice_2_5();
   practice_2_6();
@@ -193,4 +206,5 @@ void main() {
   practice_2_11();
   practice_2_12();
   practice_2_13();
+  practice_2_15();
 }
