@@ -7,6 +7,7 @@ void main() {
   char c3 = 0xff;  // 1111 1111
 
   // first bit is the sign bit
+  printf("signed \n");
   printf("%d \n", c0);  // 0
   printf("%d \n", c1);  // 127
   printf("%d \n", c2);  // -128
@@ -35,13 +36,37 @@ void main() {
   // The drawback of the last two approaches is clear, that they have two different encodings
   // of the number 0.
 
-  // Question: How C truncates a value by type conversion
-  int i = 0x12345678;
-  short int si = i;
-  int j = si;
+  unsigned char uc0 = 0x00;  // 0000 0000
+  unsigned char uc1 = 0x7f;  // 0111 1111
+  unsigned char uc2 = 0x80;  // 1000 0000
+  unsigned char uc3 = 0xff;  // 1111 1111
+  short int i = 0xfffa;      // 1111 1111 1111 1010
+  unsigned short int ui = 0xfffa;
 
-  printf("%x \n", i);   // 12345678
-  printf("%x \n", si);  // 5678
+  printf("unsigned \n");
+  printf("%u \n", uc0);  // 0
+  printf("%u \n", uc1);  // 127
+  printf("%d \n", uc2);  // 128
+  printf("%d \n", uc3);  // 255
+  printf("%d \n", i);    // -6
+  printf("%u \n", ui);   // 65530
+
+  // By changing from unsigned to singed with two's complement, the weight of the first
+  // bit has been changed from 2^(w-1) to -2^(w-1), which leads to a difference of 2^w.
+  // For example, for a word size of 16-bit(short int), 65530 becomes -6, 65535 becomes -1.
+
+  // Question: How C truncates a value by type conversion
+  int v = 0x12345678;
+  short int sv = v;
+  int j = sv;
+
+  printf("%x \n", v);   // 12345678
+  printf("%x \n", sv);  // 5678
   printf("%x \n", j);   // 5678
   // Answer: Seems the high-order bits are discarded.
+
+  int x = -1;
+  unsigned u = 2147483648;
+  printf("x = %u = %d\n", x, x);
+  printf("u = %u = %d\n", u, u);
 }
