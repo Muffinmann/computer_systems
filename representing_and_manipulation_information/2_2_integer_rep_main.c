@@ -121,4 +121,12 @@ void main() {
   printf("uy = %u \n", uy2);  // 4294954951; 0xffffcfc7
   printf("uy = %u \n", uy3);  // 53191; 0x0000cfc7
   // Answer: first change the size and then from signed to unsigned.
+
+  unsigned a = 0;
+  int zero = 0;
+  printf("a-1=%x \n", a - 1);               // 0xffffffff;
+  printf("a-3=%x \n", a - 3);               // 0xfffffffd;
+  printf("0-5 < a ? %d \n", zero - 5 < a);  // 0; This implies that signed number is turned into unsigned by comparaison.
+  // when subtract a number greater than an unsigned int a, then
+  // the result will be interpreted as two's-complement.
 }

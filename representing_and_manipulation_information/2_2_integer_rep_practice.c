@@ -68,8 +68,38 @@ void practice_2_23() {
   printf("i4: f1=%d, f2=%d\n", fun1(i4), fun2(i4));  // f1=135, f2=-121, 135=0x87, -121=0xffffff87
 }
 
+float sum_elements(float a[], unsigned length) {
+  int i;
+  float result = 0;
+
+  // This would be a bug if length is equal to 0.
+  // It is because 0 - 1 = -1 and it leads the bit vector to be [ffffffff].
+  // Since the comparision would treat both value as unsigned if one value is unsigned
+  // the check i <= length -1 would always be true.
+  // This further leads to accessing array element outside the bound.
+  //
+  // for (i = 0; i <= length - 1; i++) {
+  //
+  // Fix:
+  for (i = 0; i < length; i++) {
+    result += a[i];
+  }
+  return result;
+}
+
+void practice_2_25() {
+  printf("---practice 2.25--- \n");
+  float x[4] = {0.1, 1.1, 2, 3};
+  float res = sum_elements(x, 4);
+  printf("result = %f \n", res);
+  float x2[] = {};
+  float res2 = sum_elements(x2, 0);
+  printf("result2 = %f \n", res2);
+}
+
 void main() {
   practice_2_18();
   practice_2_21();
   practice_2_23();
+  practice_2_25();
 }
