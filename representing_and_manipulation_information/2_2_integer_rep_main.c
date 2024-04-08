@@ -35,7 +35,11 @@ void main() {
   // the bit slots by 0 or 1 according to the sign of given number which
   // has a type that takes less bytes than integer (in example "short int").
   // If the given number is positive, then the missing slots are filled with 0,
-  // otherwise with 1.
+  // otherwise with 1. This operation is also known as "sign extension".
+  // This sign extension works because for a given word size "w", the weight of
+  // previous most significant bit changes from -2^(w-1) to 2^(w-1), and the
+  // new most significant bit has a weight of -2^w and -2^(w-1) = -2^w + 2^(w-1).
+  // While the weight of rest parts stay unchanged.
 
   char c0 = 0x00;  // 0000 0000
   char c1 = 0x7f;  // 0111 1111
@@ -97,6 +101,24 @@ void main() {
 
   printf("%x \n", v);   // 12345678
   printf("%x \n", sv);  // 5678
-  printf("%x \n", j);   // 5678
-  // Answer: Seems the high-order bits are discarded.
+  printf("%d \n", j);   // 5678
+
+  int _x = 53191;  // 0x0000cfc7
+  short _sx = _x;
+  int _y = _sx;  // -12345
+  printf("y= %d =%x \n", _y, _y);
+  // Answer: Seems the high-order k-bits are dropped.
+  // Mathematically this is equivalent to computing x mod 2^k for a unsigned number x.
+  // This is also for signed number, however, the truncated number should be treated
+  // as signed.
+
+  // Question: what about from a small data size to a bigger data size?
+  short sx = -12345;
+  unsigned uy = sx;
+  unsigned uy2 = (unsigned)(int)sx;
+  unsigned uy3 = (unsigned)(unsigned short)sx;
+  printf("uy = %u \n", uy);   // 4294954951; 0xffffcfc7
+  printf("uy = %u \n", uy2);  // 4294954951; 0xffffcfc7
+  printf("uy = %u \n", uy3);  // 53191; 0x0000cfc7
+  // Answer: first change the size and then from signed to unsigned.
 }

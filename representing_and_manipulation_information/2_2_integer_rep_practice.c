@@ -49,7 +49,27 @@ void practice_2_21() {
   printf("%d \n", -2147483647 - 1u < min_i);  // 1
 }
 
+int fun1(unsigned word) {
+  return (int)((word << 24) >> 24);
+}
+int fun2(unsigned word) {
+  return ((int)word << 24) >> 24;
+}
+void practice_2_23() {
+  printf("---practice 2.23--- \n");
+  int i1, i2, i3, i4;
+  i1 = 0x00000076;
+  i2 = 0x87654321;
+  i3 = 0x000000c9;
+  i4 = 0xedcba987;
+  printf("i1: f1=%d, f2=%d\n", fun1(i1), fun2(i1));  // f1=118, f2=118, 118=0x76
+  printf("i2: f1=%d, f2=%d\n", fun1(i2), fun2(i2));  // f1=33, f2=33, 33=0x21
+  printf("i3: f1=%d, f2=%d\n", fun1(i3), fun2(i3));  // f1=201, f2=-55, 201=0xc9, -55=0xffffffc9
+  printf("i4: f1=%d, f2=%d\n", fun1(i4), fun2(i4));  // f1=135, f2=-121, 135=0x87, -121=0xffffff87
+}
+
 void main() {
   practice_2_18();
   practice_2_21();
+  practice_2_23();
 }
