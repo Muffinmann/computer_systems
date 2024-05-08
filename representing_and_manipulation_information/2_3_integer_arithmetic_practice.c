@@ -74,7 +74,9 @@ void practice_2_31() {
 int tsub_ok(int x, int y) {
   return tadd_ok(x, -y);
   // This check will fail if y is equal to -2^(w-1), since in this case
-  // -y is e
+  // -y is equal to y, and tadd_ok would return 0 for any x < 0 since
+  // negative overflow happens within the function.
+  // But in fact, x - y does not overflow for these cases.
 }
 
 void practice_2_32() {
@@ -82,9 +84,22 @@ void practice_2_32() {
   int x, y;
   x = 0xffffffff;                                                      // -1
   y = 0x80000000;                                                      // -2147483648
-  printf("x - y =%d - %d = %d ok? %d\n", x, y, x + y, tsub_ok(x, y));  // ok 0
+  printf("x - y =%d - %d = %d ok? %d\n", x, y, x - y, tsub_ok(x, y));  // ok 0
   printf("y = %d\n", y);
   printf("-y = %d\n", -y);
+}
+
+// Determine whether arguments can be multiplied without overflow
+int tmult_ok(int x, int y) {
+  int p = x * y;
+  // Either x is zero, or dividing p by x gives y
+  return !x || p/x == y;
+  // We can't use subtraction to test whether addition has overflowed (see function tadd_ok_buggy).
+  // But we can use division to test whether multiplication has overflowed. This is because:
+  // 1. In case of x == 0 || y == 0, then the p is also 0, no overflow; Either x == 0 and the function directly returns 1
+  // or y == 0 and p/x = 0 / x = 0 which also returns 1.
+  //
+  // 2.
 }
 
 void main() {

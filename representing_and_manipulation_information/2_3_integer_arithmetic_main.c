@@ -78,6 +78,6 @@ void main() {
   x5 = 9;
   y5 = 89;
   // result product: 0x00000321
-  printf("x * y = %hi * %hi = %hi\n", x5, y5, x5 * y5); // x * y = 801 = 0x321
+  printf("x * y = %hi * %hi = %hi\n", x5, y5, x5 * y5); // x * y = 801 = 0x0321
   // an overflow in multiplication of 2w bits will be simply truncted to w bits for either signed and unsigned values.
 }
