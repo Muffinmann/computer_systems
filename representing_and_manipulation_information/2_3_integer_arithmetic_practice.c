@@ -136,9 +136,29 @@ void practice_2_35() {
   // suppose r=t=0,  then we have x*y = x*q, which implies y = q.
 }
 
+int tmult_ok_long_long(int x, int y) {
+  long long p = (long long)x * y;
+  // MUST cast before the multiplication due to !!! order of operations !!! Otherwise the operation is carries out in the "int" domain first
+  // and then converts to the "long long" domain.
+  return p == (int)p;
+}
+
+void practice_2_36() {
+  printf("---practice 2.36---\n");
+  int x, y;
+  x = 0x10000000;
+  y = 0x00000002;
+  printf("x * y = %d * %d = %d ok? %d\n", x, y, x * y, tmult_ok_long_long(x, y));  // return 1
+
+  x = 0x80000000;
+  y = 0x00000002;
+  printf("x * y = %d * %d = %d ok? %d\n", x, y, x * y, tmult_ok_long_long(x, y));  // return 0
+}
+
 void main() {
   practice_2_27();
   practice_2_30();
   practice_2_31();
   practice_2_32();
+  practice_2_36();
 }
