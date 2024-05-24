@@ -70,13 +70,33 @@ void main() {
   printf("x * y = %hi * %hi = %hi\n", x5, y5, x5 * y5);  // x * y = -32768 = 0x8000
 
   x5 = 1143;
-  y5 = 1987367;
-  // result product: 0x87654321
-  printf("x * y = %hi * %hi = %hi\n", x5, y5, x5 * y5);  // x * y = 17185 = 0x4321
+  y5 = 112;
+  // result product: 0x0001f410
+  printf("x * y = %hi * %hi = %hi\n", x5, y5, x5 * y5);  // x * y = -3056 = 0xf410
 
   x5 = 9;
   y5 = 89;
   // result product: 0x00000321
   printf("x * y = %hi * %hi = %hi\n", x5, y5, x5 * y5);  // x * y = 801 = 0x0321
   // an overflow in multiplication of 2w bits will be simply truncated to w bits for either signed and unsigned values.
+
+  // Multiply by constants
+  short x6, y6;
+  x6 = 0x1011;                                       // 4113
+  y6 = 0xb000;                                       // -20480
+  printf("x * 2 = %hi * 2 = %hi\n", x6, x6 * 2);     // 8226
+  printf("x << 1 = %hi << 1 = %hi\n", x6, x6 << 1);  // 8226
+
+  printf("y * 4 = %hi * 4 = %hi = %x\n", y6, y6 * 4, y6 * 4);      // -16384 OVERFLOW!
+  printf("y << 2 = %hi << 2 = %hi = %x\n", y6, y6 << 2, y6 << 2);  // -16384 OVERFLOW!
+  // Generally, for x * K for some constants K, since the binary expression of K is an alternating sequence of zeros and ones:
+  //[(0...0)(1..1)...(0..0)], for example, let K = 14, the binary expression of 14 is (0..0)(111)(0)
+  // the multiplication can then be computed as (x << n) + (x << n-1) + ... + (x << m) for a run of ones, where n is the position of highest 1-bit and m is the position of the lowest 1-bit.
+  // In the example of 14, n = 3, m = 1
+  // Or alternatively, (x << n + 1) - (x << m), this is due to the fact that (x << n + 1) = (x << n) + (x << n) = 2 * (x << n)
+  // In details:
+  // 2 * [(x << n) + (x << n-1) + ... + (x << m)]
+  // = (x << n + 1) + (x << n) + ... +(x << m+1)
+  // = (x << n) + (x << n-1) + ... + (x << m) + (x << n) + (x << n-1) + ... + (x << m)
+  // => (x << n + 1) + (x << n) + ... +(x << m+1) - [(x << n) + (x << n-1) + ... + (x << m)] = (x << n+1) - (x << m)
 }
