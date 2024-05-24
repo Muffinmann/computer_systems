@@ -155,10 +155,48 @@ void practice_2_36() {
   printf("x * y = %d * %d = %d ok? %d\n", x, y, x * y, tmult_ok_long_long(x, y));  // return 0
 }
 
+// for the expression x*K, it can be a computed in the form:
+// (x<<n+1) - (x<<m)
+// where n is the highest bit position of 1, and m the lowest (in a run of 1 bits).
+// how could we modify the expression for the case where bit position n is
+// the most significant bit?
+void practice_2_39() {
+  printf("---practice 2.39---\n");
+  short x, y;
+  x = 4;
+  y = 0x0007;                                                                        // 7
+  printf("4 * y = %hi = (4<<2+1)-(x<<0) = %hi \n", x * y, (x << 3) - (x << 0));      // 28
+  y = 0xf800;                                                                        // 0b1111 1000 0000 0000 << 2 -> 0b1110 0000 0000 0000
+  printf("4 * y = %hi = (4<<15+1)-(x<<11) = %hi \n", x * y, (x << 16) - (x << 11));  // 0
+  printf("x << 11 = %hi \n", -(x << 11));
+  // Generally, when n is the most significant bit, (x<<n+1)-(x<<m) can be modified as:
+  // -(x<<m)
+  // Analytically, for a bit vector of word size "w", the most significant bit has the position w-1
+  // which in term leads to the form (x<<w-1+1)-(x<<m)
+  // Also, by a bit vector of word size w, shift the bits to the left for "w" times leads it to be a 0-vector.
+}
+
+// For each of the following values of K,find ways to express x*K using only the
+// specified number of operations,where we consider both additions and subtractions to have comparable cost.
+void practice_2_40() {
+  printf("---practice 2.40---\n");
+  int x = 3;
+  // 6 = 0b110
+  printf("k= 6, shifts 2, add/sub 1: x*6 = x*(4+2) = (x<<2)+(x<<1) = %d\n", (3 << 2) + (3 << 1));
+  // 31 = 0b11111
+  printf("k=31, shifts 1, add/sub 1: x*31 = x*(32-1) = (x<<5)-x =%d\n", (3 << 5) - 3);
+  // -6 = 0b11...11010
+  printf("k=-6, shifts 2, add/sub 1: x*(-6) = x*(2-8) = (x<<1) - (x<<3) = %d\n", (3 << 1) - (3 << 3));
+  // 55 = 0b110111
+  printf("k=55, shifts 2, add/sub 2: x*55 = x*(64-8-1) = (x<<6)-(x<<3)-x = %d\n", (3 << 6) - (3 << 3) - 3);
+}
+
 void main() {
   practice_2_27();
   practice_2_30();
   practice_2_31();
   practice_2_32();
   practice_2_36();
+  practice_2_39();
+  practice_2_40();
 }
