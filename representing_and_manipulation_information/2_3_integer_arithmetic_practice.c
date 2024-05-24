@@ -191,6 +191,51 @@ void practice_2_40() {
   printf("k=55, shifts 2, add/sub 2: x*55 = x*(64-8-1) = (x<<6)-(x<<3)-x = %d\n", (3 << 6) - (3 << 3) - 3);
 }
 
+int div16(int x) {
+  // if (x < 0) {
+  //   return (x + (1 << 4) - 1) >> 4;
+  // }
+  // return x >> 4;
+  //
+
+  // x>>31 generate a word with either all ones or zeros.
+  // By masking off the appropiate bits, we get the desired bias value.
+  int bias = (x >> 31) & 0xf;
+  return (x + bias) >> 4;
+}
+
+void practice_2_42() {
+  printf("---practice 2.42---\n");
+  int x;
+  printf("32 / 16 = %d\n", div16(32));    // 2
+  printf("38 / 16 = %d\n", div16(38));    // 2
+  printf("-31 / 16 = %d\n", div16(-31));  // -1
+  printf("-33 / 16 = %d\n", div16(-38));  //-2
+}
+
+void practice_2_44() {
+  printf("---practice 2.44---\n");
+  int x, y;  // arbitrary value
+  x = 16;
+  y = -128;
+  unsigned ux = x;
+  unsigned uy = y;
+  // For each of the following C expressions, either (1) argue that it is true (evaluates to 1)
+  // for all values of x and y, or (2) give values of x and y for which it is false
+  // (evaluates to 0):
+
+  // A. (x > 0) || (x-1 < 0) -> false when x == 0x80000000, x -1 will give a positive number due to overflow
+  // B. (x & 7) != 7 || (x<<29<0) -> true, 0x00000007 << 29 == 0xe0000000
+  // C. (x * x) >=0 -> false when x = 0x0000fffe; x * x == 0xfffc0004 < 0
+  // D. x < 0 || -x <= 0 -> true
+  // E. x > 0 || -x >= 0 -> false when x = TMin, in this case -x == x < 0
+  // F. x+y == uy+ux -> true, compare signed with unsigned will turn signed into unsigned, and thus equal.
+  // G. x*~y + uy*ux == -x -> true, ~y = -y -1, uy*ux=x*y, thus we have x*(-y)-x+x*y
+  printf("x*y=%d*%d=%d\n", x, y, x * y);
+  printf("ux*uy=%u*%u=%u\n", ux, uy, ux * uy);
+  printf("uy=%u\n", uy);
+}
+
 void main() {
   practice_2_27();
   practice_2_30();
@@ -199,4 +244,6 @@ void main() {
   practice_2_36();
   practice_2_39();
   practice_2_40();
+  practice_2_42();
+  practice_2_44();
 }
