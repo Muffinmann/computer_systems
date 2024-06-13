@@ -31,8 +31,12 @@ void main() {
   print_float_byte(x);  // 00 00 00 80 -> 0x80000000 -> 1000 0000 0000 0000 0...0
   // float number has a different bit representation for +0 and -0 with IEEE format.
 
-  x = 0x7f900000;
-  print_float_byte(x);  // 00 00 90 3f -> 0x3f900000 -> 0011 1111 1001 0000 0...0
+  x = 5.0;              // 1.25 * 2^2
+  print_float_byte(x);  // 00 00 10 40 -> 0x40a00000 -> 0100 0000 1010 0000 0...0
+  // e = 100 0000 1
+  // In the normalized case, the exponent value E is equal to:
+  // E = e - bias = 2^7 + 1 - 127 = 2
+
   x = 1.625;
   print_float_byte(x);  // 00 00 d0 3f -> 0x3fd00000 -> 0011 1111 1101 0000 0...0
   x = 1.375;
