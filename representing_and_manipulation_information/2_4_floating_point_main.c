@@ -44,7 +44,8 @@ void main() {
   x = 0x0.cp-126;
   print_float_byte(x);  // 00 00 60 00 -> 0000 0000 0110 0000 0...0 = 0.25 * 2 ^(-126)
   printf("%a\n", x);    // 0x1.8p-127
-  // In this case, E = 1 - bias and M = f (without an implied leading 1)
+  // In this case, E = 1 - bias (compensate for the fact that the significand of a denormalized number does not have an implied leading 1)
+  // and M = f (without an implied leading 1)
 
   x = +0.0;
   print_float_byte(x);  // 00 00 00 00 -> 0x00000000 -> 0000 0000 0000 0000 0...0
@@ -68,5 +69,32 @@ void main() {
   x = NAN;
   // when the fraction field it nonzero
   print_float_byte(x);  // 00 00 c0 7f -> 0x7fc00000 -> 0111 1111 1100 0000 0...0
+
+  x = 1.0;
+  print_float_byte(x);  // 00 00 80 3f -> 0x3f800000 -> 0011 1111 1000 0000 0...0
+  x = 1.25;
+  print_float_byte(x);  // 00 00 a0 3f -> 0x3fa00000 -> 0011 1111 1010 0000 0...0
+  x = 1.5;
+  print_float_byte(x);  // 00 00 c0 3f -> 0x3fc00000 -> 0011 1111 1100 0000 0...0
+  // The IEEE format was designed so that floating-point numbers could
+  // be sorted using an integer sorting routine.
+  // If we interpret the bit representations of the values as unsigned integers, they occur in
+  // ascending order, as do the values they represent as floating-point numbers.
+  // A minor difficulty occurs when dealing with negative numbers, since they have a leading 1,
+  // and they occur in descending order, but this can be overcome without requiring floating-point operations to
+  // perform comparisons.
+
   //
+  // Convert int to float
+  //
+  i = 12345;  // 1.1000000111001 * 2^13
+  // e = E + bias = 13 + 127 = 140 -> 10001100
+  // sign bit 0
+  // 0 1000 1100 1000000111001 0...0
+  x = 12345.0;
+  print_int_byte(i);    // 0x00003039 -> 0000 0000 0000 0000 0011000000111001
+  print_float_byte(x);  // 0x4640e400 ->             0100 0110 0100000011100100 0000 0000
+  //  the region of correlation corresponds to the low-order  bits of the integer, stopping just before
+  //  the most significant bit equal to 1 (this bit forms the implied leading 1),
+  // matching the high-order bits in the fraction part of the floating-point representation.
 }
