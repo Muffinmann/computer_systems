@@ -25,6 +25,34 @@ void practice_2_49() {
   // which equals 2^(n+1) + 1
   // when n = 23, N = 2 ^(23 + 1) + 1 = 16777217
 }
+
+// Assume variables x, f, and d are of type int, float, and double, respectively.
+// Their values are arbitrary, except that neither f nor d equals +∞, −∞, or NaN.
+// For each of the following C expressions, either argue that it will always be true
+// (i.e., evaluate to 1) or give a value for the variables such that it is not true (i.e.,
+// evaluates to 0).
+// A. x == (int)(double) x
+// B. x == (int)(float) x
+// C. d == (double)(float) d
+// D. f == (float)(double) f
+// E. f == -(-f)
+// F. 1.0/2 == 1/2.0
+// G. d*d >= 0.0
+// H. (f+d)-f == d
+void practice_2_54() {
+  printf("---practice 2.54---\n");
+  int x;
+  float f;
+  double d;
+  // B is not true when x is 
+  x = 2147483647;// TMax = (1 << 31) - 1;
+  printf("x = %d\n",x);
+  printf("(float)x = %a\n", (float)x); // 0x1p+31
+  printf("(int)(float)x=%d\n", (int)(float)x); // -2147483648
+
+}
+
 void main() {
   practice_2_46();
+  practice_2_54();
 }
